@@ -1,1 +1,3 @@
-
+firewalld is the default method in Red Hat Enterprise Linux 7 for managing host-level firewalls. 
+Started from the firewalld.service systemd service, firewalld manages the Linux kernel netfilter 
+subsystem using the low-level iptables, ip6tables, and ebtables commands.
