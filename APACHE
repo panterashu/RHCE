@@ -8,7 +8,8 @@ invaluable resource while configuring httpd.
 
 
 Install apache:
-yum install httpd
+yum install httpd httpd-manual
+httpd-manual- nu e musai
 
 Dupa ce instalezi httpd ar fi frumos sa nu uiti de:
 
