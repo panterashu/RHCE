@@ -1,1 +1,17 @@
 APACHE
+
+On Red Hat Enterprise Linux 7 Apache HTTPD is provided in the httpd package. 
+The web-server package group will install not only the httpd package itself, but also the httpd-manual package.
+Once httpd-manual is installed, and the httpd.service service is started, the full Apache
+HTTPD manual is available on http://localhost/manual. This manual has a complete reference of all the configuration directives for httpd, along with examples. This makes it an
+invaluable resource while configuring httpd.
+
+
+Install apache:
+yum install httpd
+
+Default configuration file:
+/etc/httpd/conf/httpd.conf
+
+Aici se pun paginile:
+/var/www/html
