@@ -10,8 +10,16 @@ invaluable resource while configuring httpd.
 Install apache:
 yum install httpd
 
+Dupa ce instalezi httpd ar fi frumos sa nu uiti de:
+
+systemctl enable httpd
+systemctl start httpd
+
 Default configuration file:
 /etc/httpd/conf/httpd.conf
 
-Aici se pun paginile:
+Aici se pun paginile(DocumentRoot din mai config file):
 /var/www/html
+
+Aici sunt logurile:
+/var/log/httpd/
