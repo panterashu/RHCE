@@ -39,3 +39,13 @@ the bottom of the configuration file.
 
 The postfix service requires a reload or restart after the changes have been made to /etc/postfix/main.cf.
 
+When troubleshooting email, a log of all mail-related operations is kept in the systemd
+journal and /var/log/maillog, which includes information of any mail serverrelated
+actions.
+The postqueue -p command displays a list of any outgoing mail messages that have
+been queued. To attempt to deliver all queued messages again immediately, run the
+postqueue -f command; otherwise, Postfix will attempt to resend them about once
+an hour until they are accepted or expire.
+
+
+
