@@ -1,0 +1,41 @@
+E-MAIL
+
+Postfix is the default mail server in Red Hat Enterprise Linux 7. 
+
+Postfix is provided by the postfix RPM package. It is a modular program made up of several cooperating programs. 
+
+Its components are controlled by the master process.
+
+/etc/postfix/main.cf  main configuration file of the postfix mail server 
+
+/etc/postfix/master   controls what subservices are started.
+
+The configuration file /etc/postfix/main.cf can be edited in two ways: by hand using a text editor such as vim, or it can be 
+edited using the postconf utility. 
+The postconf command allows for querying by individual or all settings, modifying settings, querying defaults, 
+or showing all settings that differ from the built-in defaults:
+
+  Run the postconf command without any parameter to query all settings from the /etc/
+postfix/main.cf configuration file
+
+postconf
+
+  Query a particular set of options by listing them after the postconf command, separated by
+white space. Run the following to list the inet_interfaces and myorigin options with their
+corresponding values
+
+postconf inet_interfaces myorigin
+
+If a value in /etc/postfix/main.cf starts with a dollar sign ($), it is not a literal
+value, but instead points to the value of a different setting. In the previous example,
+the myorigin setting will have the same value as the myhostname setting. Using
+this syntax can simplify maintenance, since the value only has to be updated in one
+place.
+
+  Run the following to add new or change existing options in the /etc/postfix/main.cf
+configuration file: postconf -e 'setting = value' If there was already a setting by that
+name in the configuration file, it will be updated to the new value; otherwise, it will be added to
+the bottom of the configuration file.
+
+The postfix service requires a reload or restart after the changes have been made to /etc/postfix/main.cf.
+
