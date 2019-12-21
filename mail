@@ -32,20 +32,31 @@ the myorigin setting will have the same value as the myhostname setting. Using
 this syntax can simplify maintenance, since the value only has to be updated in one
 place.
 
-  Run the following to add new or change existing options in the /etc/postfix/main.cf
-configuration file: postconf -e 'setting = value' If there was already a setting by that
-name in the configuration file, it will be updated to the new value; otherwise, it will be added to
+  Run the following to add new or change existing options in the /etc/postfix/main.cf configuration file: 
+  postconf -e 'setting = value' 
+  If there was already a setting by that name in the configuration file, it will be updated to the new value; otherwise, it will be added to
 the bottom of the configuration file.
 
 The postfix service requires a reload or restart after the changes have been made to /etc/postfix/main.cf.
 
-When troubleshooting email, a log of all mail-related operations is kept in the systemd
-journal and /var/log/maillog, which includes information of any mail serverrelated
-actions.
-The postqueue -p command displays a list of any outgoing mail messages that have
-been queued. To attempt to deliver all queued messages again immediately, run the
-postqueue -f command; otherwise, Postfix will attempt to resend them about once
-an hour until they are accepted or expire.
+When troubleshooting email, a log of all mail-related operations is kept in the systemd journal and /var/log/maillog, 
+which includes information of any mail serverrelated actions.
 
+The postqueue -p command displays a list of any outgoing mail messages that have been queued. 
+To attempt to deliver all queued messages again immediately, run the postqueue -f command; 
+otherwise, Postfix will attempt to resend them about once an hour until they are accepted or expire.
 
+##########
 
+Configure the Postfix mail server on serverX.example.com as a null client which relays mail through 
+smtpX.example.com, using desktopX.example.com as your organization's domain name on outgoing email
+
+postconf -e "relayhost=[smtpX.example.com]"
+postconf -e "inet_interfaces=loopback-only"
+postconf -e "mynetworks=127.0.0.0/8 [::1]/128"
+postconf -e "myorigin=desktopX.example.com"
+postconf -e "mydestination="
+postconf -e "local_transport=error: local delivery disabled"
+systemctl restart postfix
+mail -s "serverX null client" student@desktopX.example.com null client test
+mutt -f imaps://imapX.example.com
