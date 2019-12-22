@@ -1,1 +1,19 @@
 
+Systemd services:
+
+systemctl status service
+
+systemctl start service
+systemctl stop service
+systemctl restart service
+
+systemctl reload service
+
+systemctl enable service
+systemctl disable service
+
+systemctl mask service
+systemctl unmask service
+
+systemctl is-enabled service
+
