@@ -1,3 +1,5 @@
+TEAM
+
 Red Hat Enterprise Linux 7 implements network teaming with a small kernel driver and a userspace
 daemon, teamd. The kernel handles network packets efficiently and teamd handles logic
 and interface processing. Software, called runners, implement load balancing and active-backup
@@ -12,3 +14,67 @@ port for data transfers.
 balance when selecting ports for packet transmission.
 • lacp: implements the 802.3ad Link Aggregation Control Protocol. Can use the same transmit
 port selection possibilities as the loadbalance runner
+
+####################################################################################################
+
+EXEMPLU:
+
+A network team interface called team0 will have a static IP address of 192.168.0.100/24 and will be built upon
+two port interfaces: eno1 and eno2. It will be a fault-tolerant/active-backup interface.
+
+- create team0 connection
+
+nmcli con add type team con-name team0 ifname team0 config '{"runner": {"name": "activebackup"}}'
+
+- define the IPv4 settings for team0. Assign it the IP address 192.168.0.100/24; the method for IP should be static
+
+nmcli con mod team0 ipv4.addresses '192.168.0.100/24'
+nmcli con mod team0 ipv4.method manual
+
+- assign eno1 and eno2 as port interfaces for team0
+
+nmcli con add type team-slave con-name team0-port1 ifname eno1 master team0
+nmcli con add type team-slave con-name team0-port2 ifname eno2 master team0
+
+- check the current state of the teamed interfaces on the system
+
+teamdctl team0 state
+
+the teamed interface immediately becomes active with eno1 as the active port
+
+Bring the active port of the teamed interface down and see its impact upon team0.
+nmcli dev dis eno1
+
+The ping continues to work because team0 switched over to the remaining port.
+Bring the original port interface back up and bring the other port interface down
+
+nmcli con up team0-port1
+nmcli dev dis eno2
+
+
+BRIDGE
+
+A network bridge is a link-layer device that forwards traffic between networks based on MAC
+addresses. It learns what hosts are connected to each network, builds a table of MAC addresses,
+then makes packet forwarding decisions based on that table. A software bridge can be used in
+a Linux environment to emulate a hardware bridge. The most common application for software
+bridges is in virtualization applications for sharing a hardware NIC among one or more virtual
+NICs.
+
+
+A network bridge called br1 will be attached to the eno1 network interface. It will have a static
+IP address of 192.168.0.100/24.
+
+- nmcli to create the software bridge
+nmcli con add type bridge con-name br1 ifname br1
+
+- Configure the IPv4 addressing for the interface.
+
+nmcli con mod br1 ipv4.addresses 192.168.0.100/24
+nmcli con mod br1 ipv4.method manual
+
+- Attach the eno1 interface to the br1 software bridge
+nmcli con add type bridge-slave con-name br1-port0 ifname eno1 master br1
+
+Use brctl to display information about software bridges on the system.
+brctl show
