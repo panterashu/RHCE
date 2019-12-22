@@ -1,0 +1,10 @@
+Systemd targets:
+
+graphical.target
+multi-user.target
+rescue.target
+emergency.target
+
+systemctl get-default
+systemctl set-default target
+systemctl isolate target
