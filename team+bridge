@@ -1,0 +1,14 @@
+Red Hat Enterprise Linux 7 implements network teaming with a small kernel driver and a userspace
+daemon, teamd. The kernel handles network packets efficiently and teamd handles logic
+and interface processing. Software, called runners, implement load balancing and active-backup
+logic, such as roundrobin. The following runners are available to teamd:
+
+• broadcast: a simple runner which transmits each packet from all ports.
+• roundrobin: a simple runner which transmits packets in a round-robin fashing from each of
+the ports.
+• activebackup: this is a failover runner which watches for link changes and selects an active
+port for data transfers.
+• loadbalance: this runner monitors traffic and uses a hash function to try to reach a perfect
+balance when selecting ports for packet transmission.
+• lacp: implements the 802.3ad Link Aggregation Control Protocol. Can use the same transmit
+port selection possibilities as the loadbalance runner
