@@ -1,0 +1,25 @@
+NFS
+
+yum install nfs-utils
+
+selinux:
+getsebool -a | grep nfs_export
+nfs_export_all_ro --> on
+nfs_export_all_rw --> on
+
+daca nu sunt setate asa se seteaza:
+setsebool -P nfs_export_all_ro=1
+setsebool -P nfs_export_all_rw=1
+
+firewall-cmd --permanent --add-service=nfs (sa verifici daca e nevoie de =)
+firewall-cmd --reload
+
+systemctl enable rpcbind
+systemctl enable nfs-server
+
+systemctl start rpcbind
+systemctl start nfs-server
+
+vim /etc/exports
+/test1 172.31.106.46(rw,no_root_squash)
+/test2 172.31.106.46(sync)
