@@ -23,3 +23,7 @@ systemctl start nfs-server
 vim /etc/exports
 /test1 172.31.106.46(rw,no_root_squash)
 /test2 172.31.106.46(sync)
+
+exportfs -avr
+
+cat /var/lib/nfs/etab - ca sa vezi ce ai exportat si cum 
