@@ -59,3 +59,5 @@ kerberos
 /test1 172.31.106.46(rw,no_root_squash,sec=krb5)
 
 reboot, cica nfs nu se intelege cu kerberos
+
+nfs-secure-server
