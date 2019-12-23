@@ -1,5 +1,8 @@
 NFS
 
+####################################################################################################
+cam de ce ai nevoie sa exporti nfs
+
 yum install nfs-utils
 
 selinux:
@@ -27,3 +30,32 @@ vim /etc/exports
 exportfs -avr
 
 cat /var/lib/nfs/etab - ca sa vezi ce ai exportat si cum 
+
+####################################################################################################
+cam de ce ai nevoie ca sa montezi nfs
+
+- instalezi tot ca si inainte, dar nu e nevoie sa porneti nfs server
+
+rpcbind e baza aici
+
+systemctl enable rpcbind
+systemctl start rpcbind
+
+mount -t nfs -o rw 172.31.36.243:/test1 /test1
+mount -t nfs -o ro 172.31.36.243:/test2 /test2 (ro poate fi omis in acest caz)
+df -h - ca sa vezi ca a fost montat 
+
+cum arata in fstab
+
+172.31.36.243:/test1 /test1 nfs _netdev,rw 0 0 
+172.31.36.243:/test2 /test2 nfs _netdev,ro 0 0 
+
+mount -a
+
+##########
+
+kerberos
+
+/test1 172.31.106.46(rw,no_root_squash,sec=krb5)
+
+reboot, cica nfs nu se intelege cu kerberos
