@@ -22,3 +22,8 @@ setsebool -P samba_share_nfs=1
 
 semanage fcontext -at samba_share_t "/sambashare(/.*)?"
 restorecon /sambashare/
+
+firewall-cmd --permanent --add-service=samba
+firewall-cmd --reload
+
+/etc/samba/smb.conf
