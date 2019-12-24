@@ -1,1 +1,24 @@
 
+samba
+
+- cel mai sigur instalez si server si client
+
+yum install samba samba-client
+
+/sambashare - director ce vreau sa expport
+
+getsebol -a | grep samba_export
+samba_export_all_ro --> off
+samba_export_all_rw --> off
+
+getsebol -a | grep samba_share_nfs
+samba_share_nfs --> off
+
+- ar fi bine sa fie pe ok
+
+setsebool -P samba_export_all_ro=1
+setsebool -P samba_export_all_rw=1
+setsebool -P samba_share_nfs=1
+
+semanage fcontext -at samba_share_t "/sambashare(/.*)?"
+restorecon /sambashare/
