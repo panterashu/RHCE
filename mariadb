@@ -35,3 +35,12 @@ firewall-cmd --reload
 
 ca sa ma logez (daca uiti de p la final e bai)
 mysql -u root -p
+
+mysql -u root -h localhost -p
+
+Client to connect to the MariaDB database server. mysql
+Option to specify the username for this connection. -u
+Username for this connection. root
+Option to specify the host name for this connection. If not specified, the default value is localhost. -h
+Host name for this connection. localhost
+Option to prompt for password -p
