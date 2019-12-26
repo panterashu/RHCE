@@ -1,7 +1,6 @@
 MariaDB
 
-
-install
+cum se instaleaza
 yum groupinstall mariadb mariadb-client
 
 main config file
@@ -18,13 +17,21 @@ ss -tulpn | grep mysql (3306 port)
 systemctl status mariadb
 
 mysql_secure_installation
+Set root password? [Y/n] Y
+Remove anonymous users? [Y/n] Y
+Disallow root login remotely? [Y/n] Y
+Remove test database and access to it? [Y/n] Y
+Reload privilege tables now? [Y/n] Y
 
 MariaDB network configuration directives are found in the /etc/my.cnf file, under the [mysqld] section.
 - bind-address (The server will listen based on this directive.)
-- skip-networking (If set to 1, the server will listen only for local clients.)
+- skip-networking (If set to 1, the server will listen only for local clients. skip-networking=1)
 - port (Port to listen on for TCP/IP connections.)
 
 For remote access, the firewall needs to be modified. Fortunately, it is a known service, so it can be simply added via:
 
 firewall-cmd --permanent --add-service=mysql
 firewall-cmd --reload
+
+ca sa ma logez (daca uiti de p la final e bai)
+mysql -u root -p
