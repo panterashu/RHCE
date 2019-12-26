@@ -61,4 +61,62 @@ SHOW TABLES;
 To list attributes (or the column names) from a table, use:
 DESCRIBE servers;
 
+These four basic commands are often referred to by the generic term "CRUD operations." 
+CRUD stands for Create (insert), Read (select), Update (update), and Delete (delete).
 
+#insert#
+
+DESCRIBE product; - ca sa vezi ce structura are tabelul product si ce fel de date poti sa introduci
+
+INSERT INTO product (name,price,stock,id_category,id_manufacturer) VALUES ('SDSSDP-128G-G25 2.5',82.04,30,3,1);
+
+Table name.
+Attributes (columns) that will be inserted.
+Values that will be inserted in the same order defined by attributes, using the proper data types.
+
+#delete#
+DELETE FROM product WHERE id = 1;
+
+Table name.
+Clause that imposes a condition on the command execution.
+The condition for the record to be deleted; often the primary key-value pair is used.
+
+If the where clause is not specified, all records in the table will be erased. This is the database equivalent of running 
+rm -rf /.
+
+#update#
+
+UPDATE product SET price=89.90, stock=60 WHERE id = 5;
+
+Table name.
+Define the new value from specified attributes.
+Clause that imposes a condition on the command execution.
+The condition for the record to be updated.
+
+If the where clause is not specified, all records will be updated
+
+#select#
+
+SELECT name,price,stock FROM product ;
+
+Attributes that will be selected.
+Table name.
+
+To select all attributes, use the wild card *:
+SELECT * FROM product;
+
+Filter results with the where clause:
+SELECT * FROM product WHERE price > 100;
+
+Common Operators for where Clauses
+Operator Description
+
+=   Equal
+<>  Not equal. Note: In some versions of SQL, this operator may be written as !=
+>   Greater than
+<   Less than
+>=  Greater than or equal
+<=  Less than or equal
+BETWEEN   Between an inclusive range
+LIKE  Search for a pattern
+IN  To specify multiple possible values for a column
