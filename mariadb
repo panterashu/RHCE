@@ -1,0 +1,11 @@
+MariaDB
+
+
+install
+yum groupinstall mariadb mariadb-client
+
+main config file
+/etc/my.cnf
+Instead of adding new configurations to the /etc/my.cnf file, a newly created
+file named *.cnf can be added to the /etc/my.cnf.d/ directory holding the
+configuration of MariaDB.
