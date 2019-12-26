@@ -33,6 +33,7 @@ For remote access, the firewall needs to be modified. Fortunately, it is a known
 firewall-cmd --permanent --add-service=mysql
 firewall-cmd --reload
 
+- comenzi utile mysql
 ca sa ma logez (daca uiti de p la final e bai)
 mysql -u root -p
 
@@ -44,3 +45,20 @@ Username for this connection. root
 Option to specify the host name for this connection. If not specified, the default value is localhost. -h
 Host name for this connection. localhost
 Option to prompt for password -p
+
+list the databases
+SHOW DATABASES;
+
+To create a new database
+CREATE DATABASE inventory;
+
+After the creation of the new database, the next step is to connect to this database:
+USE inventory;
+
+List the tables:
+SHOW TABLES;
+
+To list attributes (or the column names) from a table, use:
+DESCRIBE servers;
+
+
