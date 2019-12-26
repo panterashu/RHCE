@@ -6,6 +6,25 @@ yum groupinstall mariadb mariadb-client
 
 main config file
 /etc/my.cnf
-Instead of adding new configurations to the /etc/my.cnf file, a newly created
-file named *.cnf can be added to the /etc/my.cnf.d/ directory holding the
-configuration of MariaDB.
+Instead of adding new configurations to the /etc/my.cnf file, a newly created file named *.cnf can be added to the 
+/etc/my.cnf.d/ directory holding the configuration of MariaDB.
+
+systemctl start mariadb
+systemctl enable mariadb
+
+Verify that MariaDB is listening on all interfaces:
+ss -tulpn | grep mysql (3306 port)
+
+systemctl status mariadb
+
+mysql_secure_installation
+
+MariaDB network configuration directives are found in the /etc/my.cnf file, under the [mysqld] section.
+- bind-address (The server will listen based on this directive.)
+- skip-networking (If set to 1, the server will listen only for local clients.)
+- port (Port to listen on for TCP/IP connections.)
+
+For remote access, the firewall needs to be modified. Fortunately, it is a known service, so it can be simply added via:
+
+firewall-cmd --permanent --add-service=mysql
+firewall-cmd --reload
