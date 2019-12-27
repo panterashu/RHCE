@@ -120,3 +120,96 @@ Operator Description
 BETWEEN   Between an inclusive range
 LIKE  Search for a pattern
 IN  To specify multiple possible values for a column
+
+Creating user accounts with MariaDB
+
+By default, MariaDB handles authentication and authorization through the user table in the mysql database.
+
+Account names are specified as 'user_name'@'host_name'. This makes it possible to create
+multiple user accounts with the same name, but with different privileges according to the source
+host (that is, the host from which the user is connecting).
+
+CREATE USER mobius@localhost IDENTIFIED BY 'redhat';
+
+Username/host name for this account
+Password for this account
+
+This user account can only connect from localhost, with the password redhat, and has no privileges. 
+Passwords are encrypted in the user table.
+
+If the host name is not provided, it is assumed to be "%". This means that this user can
+access from any source host.
+
+Privileges are the permissions that the user may have within MariaDB. The privileges are
+organized as:
+• Global privileges, such as CREATE USER and SHOW DATABASES, for administration of the
+database server itself.
+• Database privileges, such as CREATE for creating databases and working with databases on
+the server at a high level.
+• Table privileges, such as the CRUD commands, for creating tables and manipulating data in the
+database.
+• Column privileges, for granting table-like command usage, but on a particular column
+(generally rare).
+• Other, more granular privileges, which are discussed in detail in the MariaDB documentation.
+
+example:
+GRANT SELECT ON database.table TO username@hostname
+Grant select privilege for a specific table in a specific database to a specific user.
+GRANT SELECT ON database.* TO username@hostname
+Grant select privilege for all tables in a specific database to a specific user.
+GRANT SELECT ON *.* TO username@hostname
+Grant select privilege for all tables in all databases to a specific user.
+GRANT CREATE, ALTER, DROP ON database.* to username@hostname
+Grant privilege to create, alter, and drop tables in a specific database to a specific user.
+GRANT ALL PRIVILEGES ON *.* to username@hostname
+Grant all available privileges for all databases to a specific user, effectively creating a superuser, similar to root.
+
+The REVOKE statement allows for revoking privileges from accounts.
+
+After granting or revoking a privilege, reload all privileges from the privileges tables in the mysql database.
+REVOKE SELECT, UPDATE, DELETE, INSERT on inventory.category frommobius@localhost;
+Define the privileges to be revoked.
+Define for which table the privilege will be revoked.
+Privilege revoked from this user.
+
+In order to revoke privileges, the list of privileges granted to a user will be needed. The simple
+command SHOW GRANTS FOR username; will provide the list of privileges for that user:
+MariaDB [(none)]> SHOW GRANTS FOR root@localhost;
+
+When a user is no longer required, it can be deleted from the database using DROP USER
+username;. The username should use the same 'user'@'host' format used for CREATE USER.
+MariaDB [(none)]> FLUSH PRIVILEGES;
+
+Creating and Restoring MariaDB Backups
+
+There are two ways to back up MariaDB:
+• Logical
+• Physical (raw)
+
+Logical backups export information and records in plain text files, while physical backups consist
+of copies of files and directories that store content.
+
+Performing a logical backup
+A logical backup can be done with the mysqldump command:
+
+mysqldump -u root -p inventory > /backup/inventory.dump
+
+User name to connect to MariaDB for backup
+Prompt for password for this user
+Selected database for backup(inventory)
+Backup file
+
+Restoring a backup
+mysql -u root -p inventory < /backup/mariadb.dump
+User to connect with to restore the MariaDB backup (generally root or some other superuser)
+Password for this user
+Selected database for restore backup
+Backup file
+
+To logically back up all databases, use option --all-databases:
+[root@serverX ~]# mysqldump -u root -p --all-databases > /backup/mariadb.dump
+A dump of this kind will include the mysql database, which includes all user information.
+
+mysqldump requires at least the Select privilege for dumped tables, SHOW VIEW for dumped views, and TRIGGER for dumped triggers.
+
+Several tools are available to perform physical backups, such as ibbackup, cp, mysqlhotcopy, and lvm.
