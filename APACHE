@@ -16,6 +16,10 @@ Dupa ce instalezi httpd ar fi frumos sa nu uiti de:
 systemctl enable httpd
 systemctl start httpd
 
+fireqall-cmd --permanent --add-service=http
+fireqall-cmd --permanent --add-service=https
+firewall-cmd --reload
+
 Default configuration file:
 /etc/httpd/conf/httpd.conf
 
