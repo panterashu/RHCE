@@ -1,1 +1,10 @@
+####################################################################################################
+SETAT SELINUX
 
+getenforce - ca sa vad ce valoare are selinux
+
+sestatus - mai multe detalii despre selinux
+
+/etc/selinux/config - aici setez selinux in functie de ce se cere (enforcing, permissive, disabled) apoi reboot
+
+####################################################################################################
