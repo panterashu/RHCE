@@ -1,4 +1,0 @@
-ISCSI
-
-The Internet Small Computer System Interface (iSCSI) is a TCP/IP-based protocol for emulating a SCSI high-performance 
-local storage bus over IP networks, providing data transfer and management to remote block storage devices.

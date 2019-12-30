@@ -1,0 +1,54 @@
+ISCSI
+
+The Internet Small Computer System Interface (iSCSI) is a TCP/IP-based protocol for emulating a SCSI high-performance 
+local storage bus over IP networks, providing data transfer and management to remote block storage devices.
+
+iSCSI target (adica de unde exporti storage)
+
+In iSCSI, in which the SCSI bus is emulated across an IP network, a target can be a dedicated physical device 
+in a network-attached storage enclosure or an iSCSI software-configured logical device on a networked storage server.
+
+To provide access to the storage or output device, a target is configured with one or more logical unit numbers (LUNs). 
+In iSCSI, LUNs appear as the target's sequentially numbered disk drives, although targets typically have only one LUN.
+
+targetcli is both a command-line utility and an interactive shell in which to create, delete, and configure iSCSI target components.
+
+Install targetcli
+yum -y install targetcli
+
+Run targetcli with no options to enter interactive mode.
+
+ca sa vezi ce si cum:
+[root@server0 ~]# targetcli
+/> ls
+
+Create backing storage (backstores). There are several types of backing storage:
+
+block - A block device defined on the server. A disk drive, disk partition, a logical volume, multipath device, 
+any device files defined on the server that are of type b.
+
+fileio - Create a file, of a specified size, in the filesystem of the server. 
+This method is similar to using image files to be the storage for virtual machine disk images.
+
+pscsi - Physical SCSI. Permits passthrough to a physical SCSI device connected to the server. 
+This backstore type is not typically used.
+
+ramdisk - Create a ramdisk device, of a specified size, in memory on the server
+
+- exemplu de creat
+/> cd /backstores/
+/backstores> block/ create block1 /dev/iSCSI_vg/disk1_lv
+Created block storage object block1 using /dev/iSCSI_vg/disk1_lv.
+/backstores> block/ create block2 /dev/vdb2
+Created block storage object block2 using /dev/vdb2.
+/backstores> fileio/ create file1 /root/disk1_file 100M
+Created fileio file1 with size 104857600
+/backstores> ls
+o- backstores ............................................................ [...]
+o- block ................................................ [Storage Objects: 2]
+| o- block1 ....... [/dev/iSCSI_vg/disk1_lv (100.0MiB) write-thru deactivated]
+| o- block2 ...................... [/dev/vdb2 (1.0GiB) write-thru deactivated]
+o- fileio ............................................... [Storage Objects: 1]
+| o- file1 .............. [/root/disk1_file (100.0MiB) write-back deactivated]
+o- pscsi ................................................ [Storage Objects: 0]
+o- ramdisk .............................................. [Storage Objects: 0]
