@@ -207,7 +207,7 @@ name set to iqn.2014-06.com.example:desktopX.
 /> /iscsi/iqn.2014-06.com.example:serverX/tpg1/acls/ create iqn.2014-06.com.example:desktopX
 
 7. Create a LUN under the target, the LUN should use the previously defined backing storage device named serverX.disk1.
-/> /iscsi/iqn.2014-06.com.example:serverX/tpg1/luns create /backstores/block/ serverX.disk1
+/> /iscsi/iqn.2014-06.com.example:serverX/tpg1/luns create /backstores/block/serverX.disk1
 
 8. Configure a portal for the target to listen on 172.25.X.11, port 3260.
 /> /iscsi/iqn.2014-06.com.example:serverX/tpg1/portals create 172.25.X.11
