@@ -3,8 +3,9 @@ ISCSI
 The Internet Small Computer System Interface (iSCSI) is a TCP/IP-based protocol for emulating a SCSI high-performance 
 local storage bus over IP networks, providing data transfer and management to remote block storage devices.
 
+##########
 iSCSI target (adica de unde exporti storage)
-
+##########
 In iSCSI, in which the SCSI bus is emulated across an IP network, a target can be a dedicated physical device 
 in a network-attached storage enclosure or an iSCSI software-configured logical device on a networked storage server.
 
@@ -176,7 +177,11 @@ firewall-cmd --add-port=3260/tcp --permanent
 Enable the target.service systemd unit
 
 systemctl enable target
+
 ####################################################################################################
+EXEMPLU CUM SE EXPORTA
+####################################################################################################
+
 1. Install the targetcli RPM.
 yum -y install targetcli
 
@@ -196,6 +201,123 @@ targetcli
 
 5. Create a unique iSCSI Qualified Name (IQN) for the target. The target will be iqn.2014-06.com.example:serverX.
 /> /iscsi create iqn.2014-06.com.example:serverX
+
+6. Create an ACL for the client node (initiator). The initiator will be connecting with it's initiator
+name set to iqn.2014-06.com.example:desktopX.
+/> /iscsi/iqn.2014-06.com.example:serverX/tpg1/acls/ create iqn.2014-06.com.example:desktopX
+
+7. Create a LUN under the target, the LUN should use the previously defined backing storage device named serverX.disk1.
+/> /iscsi/iqn.2014-06.com.example:serverX/tpg1/luns create /backstores/block/ serverX.disk1
+
+8. Configure a portal for the target to listen on 172.25.X.11, port 3260.
+/> /iscsi/iqn.2014-06.com.example:serverX/tpg1/portals create 172.25.X.11
+
+9. View, verify, and save the target server configuration:
+
+/> ls
+o- / ............................................................. [...]
+o- backstores .................................................. [...]
+| o- block ...................................... [Storage Objects: 1]
+| | o- serverX.disk1 .....
+.....[/dev/iSCSI_vg/disk1_lv (100.0MiB) write-thru activated]
+| o- fileio ..................................... [Storage Objects: 0]
+| o- pscsi ...................................... [Storage Objects: 0]
+| o- ramdisk .................................... [Storage Objects: 0]
+o- iscsi ................................................ [Targets: 1]
+| o- iqn.2014-06.com.example:serverX ....................... [TPGs: 1]
+| o- tpg1 ................................... [no-gen-acls, no-auth]
+| o- acls .............................................. [ACLs: 1]
+| | o- iqn.2014-06.com.example:desktopX ......... [Mapped LUNs: 1]
+| | | o- mapped_lun0 ............ [lun1 block/serverX.disk1 (rw)]
+| o- luns .............................................. [LUNs: 1]
+| | o- lun0 ...... [block/serverX.disk1 (/dev/iSCSI_vg/disk1_lv)]
+| o- portals ........................................ [Portals: 1]
+| o- 172.25.X.11:3260 ..................................... [OK]
+o- loopback ............................................. [Targets: 0]
+
+####################################################################################################
+EXEMPLU CUM SE MONTEAZA
+####################################################################################################
+
+1.Install the iscsi-initiator-utils RPM, if not already installed.
+yum install -y iscsi-initiator-utils
+
+2. Create a unique iSCSI Qualified Name for the client initiator by modifying the InitiatorName setting in 
+/etc/iscsi/initiatorname.iscsi. Use the client system name as the optional string after the colon.
+
+vi /etc/iscsi/initiatorname.iscsi
+InitiatorName=iqn.2014-06.com.example:desktopX
+
+3. Enable and start the iscsi client service.
+systemctl enable iscsi; systemctl start iscsi
+
+4. Discover the configured iSCSI target(s) provided by the iSCSI target server portal.
+iscsiadm -m discovery -t st -p 172.25.X.11
+
+5. Log into the presented iSCSI target.
+iscsiadm -m node -T iqn.2014-06.com.example:serverX -p
+
+6. Identify the newly available block device created by the iSCSI target login.
+lsblk
+
+7. List the targets recognized by the iscsi service.
+iscsiadm -m session -P 3
+
+8. Change directory to the location of the iSCSI node records for the remainder of this
+exercise. Locate the persistent node record for the new iSCSI target.
+cd /var/lib/iscsi/nodes
+ls -lR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
